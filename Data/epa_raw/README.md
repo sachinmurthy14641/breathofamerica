@@ -1,1 +1,0 @@
-# EPA Raw Data Folder
