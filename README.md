@@ -9,7 +9,11 @@ This project investigates how air pollution—specifically levels of PM2.5 and O
 - Source: [CDC BRFSS](https://www.cdc.gov/brfss/annual_data/annual_data.htm)
 - Format: Fixed-width ASCII (.ASC), converted to CSV
 - Key Features: Health responses including asthma prevalence, demographics, and location data
-- Key Column: `_STATE` (mapped to full state name)
+- Key Column: 'State', '_URBSTAT', 'SEXVAR', '_SEX', '_AGEG5YR', 'EDUCA', 'INCOME3',
+       'RENTHOM1', 'EMPLOY1', '_STSTR', '_WT2RAKE', 'MSCODE', 'HAVARTH4',
+       'ASTHMA3', 'ASTHNOW', 'CHCCOPD3', 'SMOKE100', 'SMOKDAY2', 'USENOW3',
+       'ECIGNOW2', 'EXERANY2', 'AVEDRNK3', 'PRIMINS1', 'MEDCOST1', 'CHECKUP1',
+       'PERSDOC3'
 
 ### 2. EPA Air Quality System (AQS) - 2023
 - Files used:
@@ -18,15 +22,17 @@ This project investigates how air pollution—specifically levels of PM2.5 and O
 - Pollutants of Interest:
   - PM2.5 - Local Conditions
   - Ozone
-- Key Columns: `State Code`, `County Code`, `Site Num`, `Parameter Name`, `Arithmetic Mean`
+- Key Columns: `State Code`, `County Code`, `Site Num`, `Parameter Name`, 'Sample Duration','Pollutant Standard', `Arithmetic Mean`,'Arithmetic Standard Dev'
 
 ## Data Integration
 
 1. **Convert fixed-width BRFSS ASCII data** to CSV using column specifications from the CDC-provided layout and codebook.
-2. **Decode categorical variables** using SAS `FORMAT23.sas` mappings.
-3. **Join AQS pollutant data** with monitoring site metadata to extract `State Name` and `County Name`.
-4. **Aggregate pollutant data** by state and county.
-5. **Merge BRFSS and AQS data** on `State Name` to begin initial analysis (next step: improve precision using county-level identifiers).
+2.  **Load data to S3 bucket** via Python using boto3
+3.  **Convert data to parquet format** via Python by downloading data from S3 and reuploading as parquet file
+4. **Decode categorical variables** using SAS `FORMAT23.sas` mappings.
+5. **Join AQS pollutant data** with monitoring site metadata to extract `State Name` and `County Name`.
+6. **Aggregate pollutant data** by state 
+7. **Merge BRFSS and AQS data** on `State Name` to begin initial analysis (next step: improve precision using county-level identifiers).
 
 ## Next Steps
 - Enhance BRFSS records with county-level location data if available.
@@ -34,9 +40,11 @@ This project investigates how air pollution—specifically levels of PM2.5 and O
 - Generate maps and visualizations to illustrate geographic disparities.
 
 ## Tools Used
-- Python (Pandas, regex, Altair, PyPlot, Folium)
+- Python (Pandas, regex, matplotlib, plotly, s3fs, boto3)
 - EPA AirData and CDC BRFSS public data
-- Jupyter Notebook environment 
+- Jupyter Notebook environment
+- Deepnote
+- AWS S3
 
 ## Team Members
 - Sachin Murthy
